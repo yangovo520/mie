@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#f7f1fb">
+<title>暴打阳阳 · 解压小屋</title>
+<style>
+:root{--ink:#65566d;--muted:#a99bb0;--lav:#dfd0eb;--lav2:#cdb7df;--cream:#fffdf9;--pink:#f4dadd}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(circle at 15% 12%,#fff 0 7%,transparent 8%),linear-gradient(145deg,#fbf8fc,#f1eaf6);font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif;color:var(--ink);display:flex;justify-content:center}
+.app{width:min(100%,520px);min-height:100vh;padding:22px 19px 26px;display:flex;flex-direction:column;gap:15px;overflow:hidden}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.brand{font-size:23px;font-weight:900;letter-spacing:1px}.sub{font-size:11px;color:var(--muted);margin-top:3px}
+.pill{background:#fffdfbcc;border:1px solid #e9deef;border-radius:18px;padding:9px 12px;text-align:center;min-width:88px;box-shadow:0 4px 15px #9e82ad12}
+.pill small{display:block;color:var(--muted);font-size:10px}.pill b{font-size:20px;color:#8c70a0}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.scene{position:relative;flex:1;min-height:360px;border-radius:30px;background:linear-gradient(180deg,#fffdfd,#fbf7fc);border:1px solid #eee5f2;box-shadow:0 12px 35px #9279a015;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.cloud{position:absolute;width:74px;height:28px;background:#eee5f4;border-radius:30px;opacity:.65}
+.cloud:before,.cloud:after{content:"";position:absolute;background:inherit;border-radius:50%}.cloud:before{width:34px;height:34px;left:12px;top:-13px}.cloud:after{width:28px;height:28px;right:10px;top:-8px}
+.c1{top:45px;left:-8px;transform:scale(.8)}.c2{right:-8px;bottom:74px;transform:scale(.7)}
+.sheep-wrap{position:relative;width:min(78vw,330px);touch-action:manipulation;cursor:pointer;z-index:2;user-select:none;-webkit-tap-highlight-color:transparent;filter:drop-shadow(0 13px 8px #8c71951b)}
+.sheep-wrap:active{transform:scale(.98)}
+.sheep{width:100%;display:block;transform-origin:50% 78%}
+.sheep.hit{animation:bonk .34s ease}
+.sheep.hit-hard{animation:bonkHard .42s cubic-bezier(.2,.8,.2,1)}
+@keyframes bonk{0%{transform:translateX(0) rotate(0) scale(1)}18%{transform:translateX(-10px) rotate(-5deg) scale(.94,.88)}38%{transform:translateX(9px) rotate(5deg) scale(1.06,.94)}58%{transform:translateX(-6px) rotate(-3deg) scale(.97,1.04)}78%{transform:translateX(4px) rotate(2deg)}100%{transform:translateX(0) rotate(0) scale(1)}}
+@keyframes bonkHard{0%{transform:scale(1)}15%{transform:translate(-13px,4px) rotate(-9deg) scale(.88,.82)}35%{transform:translate(13px,-3px) rotate(9deg) scale(1.1,.9)}55%{transform:translate(-8px,2px) rotate(-5deg) scale(.94,1.08)}75%{transform:translate(5px) rotate(3deg)}100%{transform:scale(1)}}
+.bubble{position:absolute;top:24px;left:50%;transform:translateX(-50%);background:#fff;border:1px solid #eee2f3;border-radius:20px;padding:10px 16px;font-size:14px;font-weight:800;white-space:nowrap;box-shadow:0 5px 15px #90789b16;z-index:3}
+.bubble:after{content:"";position:absolute;bottom:-7px;left:50%;width:12px;height:12px;background:#fff;border-right:1px solid #eee2f3;border-bottom:1px solid #eee2f3;transform:translateX(-50%) rotate(45deg)}
+.tap-hint{position:absolute;bottom:18px;color:#b3a5ba;font-size:12px;letter-spacing:1px}
+.float{position:absolute;z-index:5;pointer-events:none;font-weight:900;color:#9c7bb0;text-shadow:0 2px white;animation:floatUp .7s ease-out forwards}
+@keyframes floatUp{0%{opacity:0;transform:translateY(8px) scale(.6)}20%{opacity:1}100%{opacity:0;transform:translateY(-65px) scale(1.25)}}
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+button{border:0;border-radius:19px;padding:15px 12px;font-size:15px;font-weight:800;font-family:inherit;cursor:pointer;box-shadow:0 5px 0 #bca8cc;transition:transform .08s,box-shadow .08s;color:#685773}
+button:active{transform:translateY(4px);box-shadow:0 1px 0 #bca8cc}
+.primary{background:linear-gradient(135deg,#e8d9f2,#d8c5e8);font-size:17px}
+.secondary{background:#fff;border:1px solid #eee5f2;box-shadow:0 5px 0 #e8deed}
+.mood{background:#fff;border:1px solid #eee5f2;border-radius:20px;padding:12px 14px;display:flex;gap:8px;align-items:center}
+.mood input{border:0;outline:0;min-width:0;flex:1;font:inherit;font-size:13px;color:var(--ink);background:transparent}
+.mood button{padding:8px 12px;font-size:12px;border-radius:13px;background:#f0e7f5;box-shadow:none}
+.options{display:flex;justify-content:space-between;align-items:center;color:#9d8fa5;font-size:12px;padding:0 3px}
+.switch{display:flex;align-items:center;gap:7px}.switch input{accent-color:#a88bbb;width:17px;height:17px}
+.footer{text-align:center;color:#b2a4ba;font-size:11px;letter-spacing:1px;padding-top:2px}
+.toast{position:fixed;left:50%;bottom:25px;transform:translate(-50%,20px);background:#6e5d76;color:#fff;padding:10px 16px;border-radius:20px;font-size:13px;opacity:0;transition:.25s;pointer-events:none;z-index:10}.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(min-height:800px){.scene{min-height:420px}.app{padding-top:30px}}
+</style>
+</head>
+<body>
+<main class="app">
+  <header class="top">
+    <div><div class="brand">暴打阳阳 <span style="font-size:17px">♡</span></div><div class="sub">不开心的话，就来揉揉这只羊</div></div>
+    <div class="pill"><small>今日解压</small><b id="today">0</b></div>
+  </header>
+  <section class="stats">
+    <div class="pill"><small>本次点击</small><b id="count">0</b></div>
+    <div class="pill"><small>最高连击</small><b><span id="best">0</span> <small style="display:inline">连击</small></b></div>
+  </section>
+  <section class="scene" id="scene">
+    <div class="cloud c1"></div><div class="cloud c2"></div>
+    <div class="bubble" id="bubble">今天也要对自己好一点！</div>
+    <div class="sheep-wrap" id="sheepWrap" aria-label="点击小羊解压">
+      <svg class="sheep" id="sheep" viewBox="0 0 320 300" role="img" aria-label="一只蓬松可爱的小绵羊">
+        <ellipse cx="160" cy="268" rx="111" ry="14" fill="#e9dff0"/>
+        <!-- legs -->
+        <g fill="#fffaf7" stroke="#6d5d70" stroke-width="5" stroke-linejoin="round">
+          <path d="M92 222 Q82 250 91 264 Q98 273 116 266 L124 235Z"/>
+          <path d="M198 235 L205 265 Q211 275 230 266 Q237 258 226 225Z"/>
+        </g>
+        <g fill="#66566c"><path d="M88 254 Q103 263 121 254 L123 267 Q107 279 91 269Z"/><path d="M204 255 Q220 263 235 253 L239 266 Q221 279 208 269Z"/></g>
+        <!-- fluffy body -->
+        <g fill="#fffdfa" stroke="#6d5d70" stroke-width="5" stroke-linejoin="round">
+          <circle cx="91" cy="151" r="37"/><circle cx="115" cy="111" r="40"/><circle cx="157" cy="94" r="43"/>
+          <circle cx="201" cy="108" r="41"/><circle cx="230" cy="145" r="38"/><circle cx="220" cy="190" r="39"/>
+          <circle cx="180" cy="211" r="42"/><circle cx="137" cy="211" r="42"/><circle cx="99" cy="190" r="39"/>
+        </g>
+        <!-- face -->
+        <path d="M111 137 Q119 112 158 112 Q199 112 210 145 L207 207 Q190 236 158 237 Q124 236 108 207Z" fill="#f8e8e4" stroke="#6d5d70" stroke-width="5"/>
+        <!-- ears -->
+        <path d="M108 145 Q73 126 67 153 Q66 177 105 181Z" fill="#fffdfa" stroke="#6d5d70" stroke-width="5"/>
+        <path d="M212 145 Q247 126 253 153 Q254 177 215 181Z" fill="#fffdfa" stroke="#6d5d70" stroke-width="5"/>
+        <path d="M78 151 Q91 148 103 164 M242 151 Q229 148 217 164" fill="none" stroke="#b99eaa" stroke-width="4" stroke-linecap="round"/>
+        <!-- face details -->
+        <g id="faceNormal">
+          <ellipse cx="139" cy="174" rx="5" ry="7" fill="#594b60"/><ellipse cx="181" cy="174" rx="5" ry="7" fill="#594b60"/>
+          <ellipse cx="119" cy="193" rx="11" ry="6" fill="#efb9c2" opacity=".65"/><ellipse cx="201" cy="193" rx="11" ry="6" fill="#efb9c2" opacity=".65"/>
+          <path d="M151 190 Q160 199 169 190" fill="none" stroke="#6d5d70" stroke-width="4" stroke-linecap="round"/>
+        </g>
+        <g id="faceDizzy" style="display:none">
+          <path d="M131 171 l14 10 m0 -10 l-14 10 M174 171 l14 10 m0 -10 l-14 10" stroke="#594b60" stroke-width="4" stroke-linecap="round"/>
+          <ellipse cx="160" cy="198" rx="8" ry="10" fill="#8e718e"/>
+          <path d="M119 193 Q130 185 139 194 M181 194 Q190 185 201 193" fill="none" stroke="#efb9c2" stroke-width="5" stroke-linecap="round"/>
+        </g>
+        <g id="faceOuch" style="display:none">
+          <path d="M131 177 Q139 168 147 177 M173 177 Q181 168 189 177" fill="none" stroke="#594b60" stroke-width="4" stroke-linecap="round"/>
+          <ellipse cx="160" cy="196" rx="8" ry="11" fill="#8e718e"/>
+          <path d="M119 193 Q130 185 139 194 M181 194 Q190 185 201 193" fill="none" stroke="#efb9c2" stroke-width="5" stroke-linecap="round"/>
+        </g>
+        <!-- wool tuft -->
+        <path d="M146 69 Q139 51 154 48 Q164 33 176 49 Q193 45 194 63 Q184 76 169 73Z" fill="#fffdfa" stroke="#6d5d70" stroke-width="5"/>
+      </svg>
+    </div>
+    <div class="tap-hint">轻点小羊，或者按下面的按钮 ♡</div>
+  </section>
+  <section class="controls">
+    <button class="primary" id="hitBtn">✊ 暴打它！</button>
+    <button class="secondary" id="resetBtn">↻ 重新开始</button>
+  </section>
+  <div class="mood"><span>💭</span><input id="moodInput" maxlength="32" placeholder="今天有什么烦心事？写下来吧…"><button id="moodBtn">让小羊听听</button></div>
+  <div class="options">
+    <label class="switch"><input type="checkbox" id="sound"> 音效开关</label>
+    <span id="modeText">温柔解压模式</span>
+    <label class="switch"><input type="checkbox" id="crazy"> 疯狂模式</label>
+  </div>
+  <footer class="footer">♡ 把不开心都打飞吧 ♡　·　咩 ovo</footer>
+</main>
+<div class="toast" id="toast"></div>
+<script>
+(()=>{
+ const $=id=>document.getElementById(id);
+ const todayKey='sheep_day_'+new Date().toLocaleDateString('sv-SE');
+ let total=Number(localStorage.getItem(todayKey)||0), count=0, combo=0, best=0, last=0, toastTimer;
+ $('today').textContent=total;
+ const phrases=['哎呀！轻点嘛！','你今天受委屈啦？','咩？！我招谁惹谁啦','好好好，你最大！','呼……再揉揉也行','烦恼飞走，快乐留下！','别气啦，给你贴贴！','我宣布你今天赢了！'];
+ const normal=$('faceNormal'),dizzy=$('faceDizzy'),ouch=$('faceOuch');
+ function face(which){normal.style.display=which==='normal'?'':'none';dizzy.style.display=which==='dizzy'?'':'none';ouch.style.display=which==='ouch'?'':'none'}
+ function toast(msg){$('toast').textContent=msg;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),1700)}
+ function sound(){if(!$('sound').checked)return;try{const C=window.AudioContext||window.webkitAudioContext,ctx=new C(),o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.setValueAtTime(260,ctx.currentTime);o.frequency.exponentialRampToValueAtTime(110,ctx.currentTime+.09);g.gain.setValueAtTime(.12,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.12);o.connect(g);g.connect(ctx.destination);o.start();o.stop(ctx.currentTime+.13);o.onended=()=>ctx.close()}catch(e){}}
+ function hit(x,y){
+   count++;total++;combo++;
+   const now=Date.now();if(now-last>1100)combo=1;last=now;best=Math.max(best,combo);
+   $('count').textContent=count;$('today').textContent=total;$('best').textContent=best;
+   localStorage.setItem(todayKey,total);
+   const sheep=$('sheep');sheep.classList.remove('hit','hit-hard');void sheep.offsetWidth;
+   const hard=$('crazy').checked||combo>=6;sheep.classList.add(hard?'hit-hard':'hit');
+   face(combo>=5?'dizzy':(combo%3===0?'ouch':'normal'));
+   $('bubble').textContent=phrases[Math.floor(Math.random()*phrases.length)];
+   const r=$('scene').getBoundingClientRect(),fx=x??(r.width/2),fy=y??(r.height*.53);
+   const el=document.createElement('span');el.className='float';el.textContent=['砰！','咩！','啪！','✦','噗！'][Math.floor(Math.random()*5)];el.style.left=(fx-10)+'px';el.style.top=(fy-8)+'px';$('scene').appendChild(el);setTimeout(()=>el.remove(),750);
+   if(combo===5)toast('5 连击！小羊开始转圈圈啦！');else if(combo===10)toast('10 连击！解压值拉满！');
+   sound();
+   clearTimeout(window.comboTimer);window.comboTimer=setTimeout(()=>{combo=0;face('normal')},1150);
+ }
+ $('sheepWrap').addEventListener('pointerdown',e=>{e.preventDefault();const r=$('scene').getBoundingClientRect();hit(e.clientX-r.left,e.clientY-r.top)});
+ $('hitBtn').addEventListener('click',()=>hit());
+ $('resetBtn').addEventListener('click',()=>{count=0;combo=0;best=0;$('count').textContent='0';$('best').textContent='0';face('normal');$('bubble').textContent='重新开始！烦恼清零 ♡';toast('本次记录已重置')});
+ $('moodBtn').addEventListener('click',()=>{const v=$('moodInput').value.trim();if(!v){toast('先写一句烦心事吧');return}$('bubble').textContent='我听见啦：'+v.slice(0,14);$('moodInput').value='';toast('小羊替你收好这份心情啦 ♡')});
+ $('crazy').addEventListener('change',e=>{$('modeText').textContent=e.target.checked?'疯狂解压模式':'温柔解压模式';toast(e.target.checked?'疯狂模式开启！':'切回温柔模式')});
+})();
+</script>
+</body>
+</html>
